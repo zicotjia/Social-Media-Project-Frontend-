@@ -1,20 +1,24 @@
 import React from 'react';
 import { Box, CloseButton, Flex, Icon, useColorModeValue, Link, Text, BoxProps, FlexProps } from '@chakra-ui/react';
 import { FiHome } from 'react-icons/fi';
-import { MdAddBox } from 'react-icons/md';
+import { MdAddBox, MdOutlinePeopleAlt, MdPeople, MdPeopleOutline } from 'react-icons/md';
 import { IconType } from 'react-icons';
 import { CgProfile } from 'react-icons/cg';
 import { ReactText } from 'react';
 
 interface LinkItemProps {
   name: string;
+  url: string;
   icon: IconType;
 }
 
 const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome },
-  { name: 'Add Post', icon: MdAddBox },
-  { name: 'Profile', icon: CgProfile },
+  { name: 'Home', url: '/', icon: FiHome },
+  { name: 'Add Post', url: '/addpost', icon: MdAddBox },
+  { name: 'Profile', url: '/profile', icon: CgProfile },
+  { name: 'All Users', url: '/people', icon: MdOutlinePeopleAlt },
+  { name: 'Follower', url: '/follower', icon: MdPeople },
+  { name: 'Following', url: '/following', icon: MdPeopleOutline },
 ];
 
 interface SidebarProps extends BoxProps {
@@ -40,7 +44,7 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} url="/test" icon={link.icon}>
+        <NavItem key={link.name} url={link.url} icon={link.icon}>
           {link.name}
         </NavItem>
       ))}

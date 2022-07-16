@@ -45,3 +45,21 @@ export function userLogin(values : loginFormValues) {
     
     }
 }
+
+export function getUsers() {
+
+    return async function(dispatch : Dispatch) {
+        
+        dispatch({type: "loading", payload: true});
+
+        try {
+            const response = await axios.get<User[]>(url + '/users/getusers')
+            dispatch({type: 'LOADING', payload: false})
+            dispatch({type: 'GET_ALL_USERS', payload: response.data});
+        } catch (error) {
+            console.log(error);
+            dispatch({type:'LOADING', payload: false})
+            alert(error);
+        } 
+    }
+}

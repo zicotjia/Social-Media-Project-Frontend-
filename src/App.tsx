@@ -10,7 +10,9 @@ import { Spinner } from '@chakra-ui/react';
 import { useAppSelector } from './hooks/redux/hooks';
 import ProtectedRoutes from './wrapper/ProtectedRoutes';
 import Sidebar from './components/Sidebar';
-import ImagePost from './components/ImagePost';
+import People from './pages/AllUsers';
+import PersonCard from './components/PersonCard';
+import AllUsers from './pages/AllUsers';
 
 function App() {
   const { loading } = useAppSelector((state) => state.alertReducer);
@@ -30,9 +32,35 @@ function App() {
                 </>
               }
             />
+            <Route
+              path="/people"
+              element={
+                <>
+                  <AppShell />
+                  <People />
+                </>
+              }
+            />
+            <Route
+              path="/addpost"
+              element={
+                <>
+                  <AppShell />
+                  <Addpost />
+                </>
+              }
+            />
+            <Route
+              path="/addpost"
+              element={
+                <>
+                  <AppShell />
+                  <AllUsers />
+                </>
+              }
+            />
           </Route>
           <Route path="/profile" element={<Profile />} />
-          <Route path="/addpost" element={<Addpost />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/addpost" element={<Addpost />} />

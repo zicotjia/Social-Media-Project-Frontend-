@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Flex,
   FormControl,
   FormLabel,
   Heading,
@@ -9,6 +8,7 @@ import {
   Stack,
   Textarea,
   useColorModeValue,
+  VStack,
 } from '@chakra-ui/react';
 import { Field, Form, Formik, FormikProps, FormikValues } from 'formik';
 import React from 'react';
@@ -16,12 +16,12 @@ import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/redux/hooks';
 import { User } from '../models/User';
 import { uploadFile } from '../hooks/redux/actions/postActions';
-import { ObjectId } from 'mongodb';
+import PlainLayout from '../layout/PlainLayout';
 
 export interface AddPostValues {
   description: string;
   file: string;
-  user: ObjectId;
+  user: User;
 }
 
 export function AddForm() {
@@ -31,7 +31,7 @@ export function AddForm() {
 
   const dispatch = useAppDispatch();
 
-  const initialValues: AddPostValues = { description: '', file: '', user: user._id };
+  const initialValues: AddPostValues = { description: '', file: '', user: user };
   const filePicker = React.useRef<HTMLInputElement>(null);
   const formikRef = React.useRef<FormikProps<AddPostValues>>(null);
 
@@ -67,8 +67,8 @@ export function AddForm() {
   }
 
   return (
-    <Flex minH={'100vh'} align={'center'} justify={'center'} bg={useColorModeValue('gray.50', 'gray.800')}>
-      <Stack spacing={4} mx={'auto'} maxW={'lg'} py={12} px={0}>
+    <PlainLayout>
+      <VStack>
         <Stack align={'center'}>
           <Heading fontSize={'4xl'} textAlign={'center'}>
             Add your Post
@@ -116,7 +116,7 @@ export function AddForm() {
                           width="30%"
                           textAlign="center"
                           rounded="md"
-                          onClick={refClick}
+                          onClick={() => refClick()}
                         >
                           Submit
                         </Box>
@@ -134,14 +134,30 @@ export function AddForm() {
                     </FormControl>
                   )}
                 </Field>
-                <Button colorScheme={'blue'} variant={'solid'} type="submit">
+                <Button
+                  flex={1}
+                  fontSize={'sm'}
+                  rounded={'full'}
+                  bg={'blue.400'}
+                  color={'white'}
+                  mt={8}
+                  boxShadow={'0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'}
+                  _hover={{
+                    bg: 'blue.500',
+                  }}
+                  _focus={{
+                    bg: 'blue.500',
+                  }}
+                  type="submit"
+                >
                   Add Post
                 </Button>
+                <Button>Follow</Button>
               </Stack>
             </Form>
           </Formik>
         </Box>
-      </Stack>
-    </Flex>
+      </VStack>
+    </PlainLayout>
   );
 }

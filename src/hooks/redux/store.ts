@@ -6,10 +6,10 @@ import { alertsReducer } from "./reducers/alertsReducer";
 import { currUserReducer } from "./reducers/currentUserReducers";
 import { errorReducer } from "./reducers/errorReducer";
 import { postsReducer } from "./reducers/postsReducer";
-import {userReducer} from "./reducers/userReducer";
+import {usersReducer} from "./reducers/usersReducer";
 
 const rootReducer = combineReducers({
-  userReducer: userReducer,
+  usersReducer: usersReducer,
   alertReducer : alertsReducer,
   currUserReducer: currUserReducer,
   errorReducer: errorReducer,

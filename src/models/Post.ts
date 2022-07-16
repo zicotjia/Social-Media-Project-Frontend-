@@ -7,18 +7,20 @@ export interface Post {
     file: string;
     comments: Comment[],
     user: User,
-    likes: Like[]
+    likes: Like[],
     created_at: Date
 }
 
 export interface Comment {
-    user: User,
+    userid: ObjectId,
+    username: string
     date: Date,
     comment: string,
     created_at: Date
 }
 
 export interface Like {
-    user: User,
+    userid: ObjectId,
+    username: string
     Date: Date,
 }

@@ -71,8 +71,9 @@ function Login() {
               <Stack spacing={7}>
                 <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
                   <Checkbox>Remembr me</Checkbox>
-                  <Link color={'blue.500'}>Forgot password?</Link>
-                  <Link color={'blue.500'}>Click here to make an Account</Link>
+                  <Link href="/register" color={'blue.500'}>
+                    Click here to make an Account
+                  </Link>
                 </Stack>
                 <Button colorScheme={'blue'} variant={'solid'} type="submit">
                   Sign in

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { AddPostValues } from '../../../components/AddForm';
-import { likeRequest } from '../../../components/ImagePost';
+import { likeRequest } from '../../../components/Like';
 import { url } from '../../../config/config';
 import { Post } from '../../../models/Post';
 
@@ -29,7 +29,7 @@ export function getFile() {
         dispatch({type: "loading", payload: true});
 
         try {
-            const response = await axios.get<Post>(url + '/post/getpost')
+            const response = await axios.get<Post[]>(url + '/post/getpost')
             dispatch({type: 'LOADING', payload: false})
             dispatch({type: 'GET_ALL_POSTS', payload: response.data});
         } catch (error) {
@@ -56,4 +56,22 @@ export function likePost(values : likeRequest) {
             alert(error);
         }
     }
+}
+
+export function unLikePost(values : likeRequest) {
+
+    return async function(dispatch : Dispatch) {
+
+        dispatch({type: "loading", payload: true});
+        alert(JSON.stringify(values, null, 2));
+        try {
+            await axios.patch(url + '/post/unlike', values)
+            dispatch({type: 'LOADING', payload: false})
+            console.log('unliked');
+        } catch (error) {
+            console.log(error);
+            dispatch({type: 'LOADING', payload: false})
+            alert(error);
+        }
+    }   
 }
