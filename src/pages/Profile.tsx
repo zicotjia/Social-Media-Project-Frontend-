@@ -1,9 +1,8 @@
-import React from 'react'
+import React from 'react';
+import PlainLayout from '../layout/PlainLayout';
 
 function Profile() {
-  return (
-    <div>Profile</div>
-  )
+  return <PlainLayout>Profile</PlainLayout>;
 }
 
-export default Profile
+export default Profile;

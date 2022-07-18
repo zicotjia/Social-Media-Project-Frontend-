@@ -5,6 +5,7 @@ import { MdAddBox, MdOutlinePeopleAlt, MdPeople, MdPeopleOutline } from 'react-i
 import { IconType } from 'react-icons';
 import { CgProfile } from 'react-icons/cg';
 import { ReactText } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface LinkItemProps {
   name: string;
@@ -26,6 +27,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+  const navigate = useNavigate();
   return (
     <Box
       transition="3s ease"
@@ -39,12 +41,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Logo
+          Menu
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} url={link.url} icon={link.icon}>
+        <NavItem key={link.name} onClick={() => navigate(link.url)} icon={link.icon}>
           {link.name}
         </NavItem>
       ))}
@@ -54,13 +56,12 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
-  url: string;
   children: ReactText;
 }
 
-const NavItem = ({ icon, url, children, ...rest }: NavItemProps) => {
+const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
   return (
-    <Link href={url} style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
+    <Link style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       <Flex
         align="center"
         p="4"

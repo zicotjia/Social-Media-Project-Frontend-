@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { AddPostValues } from '../../../components/AddForm';
-import { likeRequest } from '../../../components/Like';
+import { LikeRequest } from '../../../components/Like';
 import { url } from '../../../config/config';
 import { Post } from '../../../models/Post';
 
@@ -40,12 +40,11 @@ export function getFile() {
     }
 }
 
-export function likePost(values : likeRequest) {
+export function likePost(values : LikeRequest) {
 
     return async function(dispatch : Dispatch) {
 
         dispatch({type: "loading", payload: true});
-        alert(JSON.stringify(values, null, 2));
         try {
             await axios.patch(url + '/post/like', values)
             dispatch({type: 'LOADING', payload: false})
@@ -58,12 +57,11 @@ export function likePost(values : likeRequest) {
     }
 }
 
-export function unLikePost(values : likeRequest) {
+export function unLikePost(values : LikeRequest) {
 
     return async function(dispatch : Dispatch) {
 
         dispatch({type: "loading", payload: true});
-        alert(JSON.stringify(values, null, 2));
         try {
             await axios.patch(url + '/post/unlike', values)
             dispatch({type: 'LOADING', payload: false})
@@ -75,3 +73,4 @@ export function unLikePost(values : likeRequest) {
         }
     }   
 }
+

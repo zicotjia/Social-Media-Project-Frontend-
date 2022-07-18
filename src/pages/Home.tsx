@@ -23,7 +23,7 @@ function Home() {
         <VStack align="center" spacing={2}>
           {posts &&
             posts.map((post, index) => {
-              return <ImagePost post={posts[0]} />;
+              return <ImagePost post={post} />;
             })}
         </VStack>
       </Box>

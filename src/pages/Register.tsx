@@ -22,7 +22,7 @@ import { userRegister } from '../hooks/redux/actions/userActions';
 import { Field, Form, Formik, FormikValues } from 'formik';
 import { validateEmail, validateName, validatePassword, validateUsername } from '../validator/validator';
 
-export interface registerFormValues {
+export interface RegisterFormValues {
   first_name: string;
   last_name: string;
   username: string;
@@ -35,7 +35,7 @@ function Register() {
 
   const dispatch = useAppDispatch();
 
-  const initialValues: registerFormValues = {
+  const initialValues: RegisterFormValues = {
     first_name: '',
     last_name: '',
     username: '',
@@ -43,8 +43,7 @@ function Register() {
     password: '',
   };
 
-  function registerHandler(values: registerFormValues) {
-    console.log(values);
+  function registerHandler(values: RegisterFormValues) {
     try {
       dispatch(userRegister(values));
     } catch (error) {
@@ -62,7 +61,7 @@ function Register() {
         </Stack>
         <Formik
           initialValues={initialValues}
-          onSubmit={(values: registerFormValues, action) => {
+          onSubmit={(values: RegisterFormValues, action) => {
             registerHandler(values);
           }}
           validateOnChange={false}
@@ -73,7 +72,7 @@ function Register() {
                 <HStack>
                   <Box>
                     <Field name="first_name" validate={validateName}>
-                      {({ field, form }: { field: registerFormValues; form: FormikValues }) => (
+                      {({ field, form }: { field: RegisterFormValues; form: FormikValues }) => (
                         <FormControl
                           id="first_Name"
                           isRequired
@@ -88,7 +87,7 @@ function Register() {
                   </Box>
                   <Box>
                     <Field name="last_name" validate={validateName}>
-                      {({ field, form }: { field: registerFormValues; form: FormikValues }) => (
+                      {({ field, form }: { field: RegisterFormValues; form: FormikValues }) => (
                         <FormControl
                           id="last_Name"
                           isRequired
@@ -103,7 +102,7 @@ function Register() {
                   </Box>
                 </HStack>
                 <Field name="username" validate={validateUsername}>
-                  {({ field, form }: { field: registerFormValues; form: FormikValues }) => (
+                  {({ field, form }: { field: RegisterFormValues; form: FormikValues }) => (
                     <FormControl id="username" isRequired isInvalid={form.errors.username && form.touched.username}>
                       <FormLabel>Username</FormLabel>
                       <Input {...field} type="text" />
@@ -112,7 +111,7 @@ function Register() {
                   )}
                 </Field>
                 <Field name="email" validate={validateEmail}>
-                  {({ field, form }: { field: registerFormValues; form: FormikValues }) => (
+                  {({ field, form }: { field: RegisterFormValues; form: FormikValues }) => (
                     <FormControl id="email" isRequired isInvalid={form.errors.email && form.touched.email}>
                       <FormLabel>Email address</FormLabel>
                       <Input {...field} type="email" />
@@ -121,7 +120,7 @@ function Register() {
                   )}
                 </Field>
                 <Field name="password" validate={validatePassword}>
-                  {({ field, form }: { field: registerFormValues; form: FormikValues }) => (
+                  {({ field, form }: { field: RegisterFormValues; form: FormikValues }) => (
                     <FormControl id="password" isRequired isInvalid={form.errors.password && form.touched.password}>
                       <FormLabel>Password</FormLabel>
                       <InputGroup>

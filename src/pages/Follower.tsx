@@ -7,9 +7,7 @@ import { useEffect } from 'react';
 import { getUsers } from '../hooks/redux/actions/userActions';
 import { User } from '../models/User';
 
-export interface IAppProps {}
-
-function AllUsers(props: IAppProps) {
+function Follower() {
   const dispatch = useAppDispatch();
 
   const { user }: { user: User } = useAppSelector((state) => state.currUserReducer);
@@ -22,21 +20,17 @@ function AllUsers(props: IAppProps) {
   var copy = users.slice();
   copy = copy.filter((otherUsers) => otherUsers._id !== user._id);
 
-  var followingUsers: User[] = [];
-  var notFollowingUsers: User[] = [];
+  var followerUsers: User[] = [];
 
   if (user.following) {
-    followingUsers = copy.filter((otherUser) => user.following.includes(otherUser._id));
-    notFollowingUsers = copy.filter((otherUser) => !user.following.includes(otherUser._id));
-  } else {
-    notFollowingUsers = copy;
+    followerUsers = copy.filter((otherUser) => user.follower.includes(otherUser._id));
   }
 
   return (
     <PlainLayout>
       <Grid templateColumns="repeat(5, 1fr)" ml={3} gap={6}>
-        {copy &&
-          copy.map((otherUser, index) => {
+        {followerUsers &&
+          followerUsers.map((otherUser, index) => {
             if (user.following.includes(otherUser._id)) {
               return (
                 <GridItem>
@@ -56,4 +50,4 @@ function AllUsers(props: IAppProps) {
   );
 }
 
-export default AllUsers;
+export default Follower;

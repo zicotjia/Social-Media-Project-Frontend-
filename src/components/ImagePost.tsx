@@ -7,19 +7,19 @@ import Like from './Like';
 
 //src={props.post.user.profilepicurl}
 
-interface postProps {
+interface PostProps {
   post: Post;
 }
 
-interface boldProps {
+interface BoldProps {
   children: ReactNode;
 }
 
-function Bold(props: boldProps) {
+function Bold(props: BoldProps) {
   return <Text style={{ fontWeight: 'bold' }}>{props.children}</Text>;
 }
 
-function ImagePost({ post }: postProps) {
+function ImagePost({ post }: PostProps) {
   const { user }: { user: User } = useAppSelector((state) => state.currUserReducer);
 
   let postDay: string;
@@ -52,7 +52,7 @@ function ImagePost({ post }: postProps) {
         pos={'relative'}
         zIndex={1}
       >
-        <HStack p={2} w="full" roundedTop="lg" top="100%" bg={useColorModeValue('green', 'gray.700')}>
+        <HStack p={2} w="full" roundedTop="lg" top="100%" bg={useColorModeValue('blue.300', 'gray.700')}>
           <Box mr="10px">
             <Avatar size={'sm'} src={post.user.profilepicurl} />
           </Box>

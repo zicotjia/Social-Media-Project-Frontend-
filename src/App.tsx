@@ -11,8 +11,10 @@ import { useAppSelector } from './hooks/redux/hooks';
 import ProtectedRoutes from './wrapper/ProtectedRoutes';
 import Sidebar from './components/Sidebar';
 import People from './pages/AllUsers';
-import PersonCard from './components/PersonCard';
 import AllUsers from './pages/AllUsers';
+import { ProfilePage } from './components/ProfilePage';
+import Following from './pages/Following';
+import Follower from './pages/Follower';
 
 function App() {
   const { loading } = useAppSelector((state) => state.alertReducer);
@@ -59,8 +61,34 @@ function App() {
                 </>
               }
             />
+            <Route
+              path="/profile"
+              element={
+                <>
+                  <AppShell />
+                  <ProfilePage />
+                </>
+              }
+            />
+            <Route
+              path="/following"
+              element={
+                <>
+                  <AppShell />
+                  <Following />
+                </>
+              }
+            />
+            <Route
+              path="/follower"
+              element={
+                <>
+                  <AppShell />
+                  <Follower />
+                </>
+              }
+            />
           </Route>
-          <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/addpost" element={<Addpost />} />

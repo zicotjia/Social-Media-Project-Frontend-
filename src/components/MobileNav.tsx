@@ -18,12 +18,14 @@ import {
 import { FiMenu, FiChevronDown } from 'react-icons/fi';
 import { User } from '../models/User';
 import { useAppSelector } from '../hooks/redux/hooks';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { user }: { user: User } = useAppSelector((state) => state.currUserReducer);
+  const navigate = useNavigate();
 
   return (
     <Flex
@@ -46,7 +48,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
       />
 
       <Text display={{ base: 'flex', md: 'none' }} fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-        Logo
+        Menu
       </Text>
 
       <HStack spacing={{ base: '0', md: '6' }}>
@@ -54,7 +56,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
           <Menu>
             <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
               <HStack>
-                <Avatar size={'md'} />
+                <Avatar size={'md'} src={user.profilepicurl} />
                 <VStack display={{ base: 'none', md: 'flex' }} alignItems="flex-start" spacing="1px" ml="2">
                   <Text fontSize="sm">{user.username}</Text>
                 </VStack>
@@ -67,8 +69,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
               bg={useColorModeValue('white', 'gray.900')}
               borderColor={useColorModeValue('gray.200', 'gray.700')}
             >
-              <MenuItem>Profile</MenuItem>
-              <MenuItem>Settings</MenuItem>
+              <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
               <MenuDivider />
               <MenuItem>Sign out</MenuItem>
             </MenuList>

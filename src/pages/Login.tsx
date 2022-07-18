@@ -17,7 +17,7 @@ import { userLogin } from '../hooks/redux/actions/userActions';
 import { useAppDispatch } from '../hooks/redux/hooks';
 import { validateEmail, validatePassword } from '../validator/validator';
 
-export interface loginFormValues {
+export interface LoginFormValues {
   email: string;
   password: string;
 }
@@ -26,7 +26,7 @@ function Login() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  async function loginHandler(values: loginFormValues) {
+  async function loginHandler(values: LoginFormValues) {
     console.log(values);
 
     await dispatch(userLogin(values));
@@ -34,7 +34,7 @@ function Login() {
     navigate('/');
   }
 
-  const initialValues: loginFormValues = { email: '', password: '' };
+  const initialValues: LoginFormValues = { email: '', password: '' };
 
   return (
     <Stack minH={'100vh'} direction={{ base: 'column', md: 'row' }}>
@@ -43,15 +43,14 @@ function Login() {
           <Heading fontSize={'2xl'}>Sign in to your account</Heading>
           <Formik
             initialValues={initialValues}
-            onSubmit={(values: loginFormValues, action) => {
-              alert(JSON.stringify(values, null, 2));
+            onSubmit={(values: LoginFormValues, action) => {
               loginHandler(values);
             }}
             validateOnChange={false}
           >
             <Form>
               <Field name="email" validate={validateEmail}>
-                {({ field, form }: { field: loginFormValues; form: FormikValues }) => (
+                {({ field, form }: { field: LoginFormValues; form: FormikValues }) => (
                   <FormControl isRequired id="email" isInvalid={form.errors.email && form.touched.email}>
                     <FormLabel>Email address</FormLabel>
                     <Input {...field} type="email" />
@@ -60,7 +59,7 @@ function Login() {
                 )}
               </Field>
               <Field name="password" validate={validatePassword}>
-                {({ field, form }: { field: loginFormValues; form: FormikValues }) => (
+                {({ field, form }: { field: LoginFormValues; form: FormikValues }) => (
                   <FormControl isRequired id="password" isInvalid={form.errors.password && form.touched.password}>
                     <FormLabel>Password</FormLabel>
                     <Input {...field} type="password" />
