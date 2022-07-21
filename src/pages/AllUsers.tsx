@@ -20,28 +20,45 @@ function AllUsers(props: IAppProps) {
   }, []);
 
   var copy = users.slice();
-  copy = copy.filter((otherUsers) => otherUsers._id !== user._id);
+  console.log(user);
+
+  if (user) {
+    copy = copy.filter((otherUsers) => otherUsers._id !== user._id);
+  }
 
   return (
     <PlainLayout>
-      <Grid templateColumns="repeat(5, 1fr)" ml={3} gap={6}>
-        {copy &&
-          copy.map((otherUser, index) => {
-            if (user.following.includes(otherUser._id)) {
+      {user ? (
+        <Grid templateColumns="repeat(5, 1fr)" ml={3} gap={6}>
+          {copy &&
+            copy.map((otherUser, index) => {
+              if (user.following.includes(otherUser._id)) {
+                return (
+                  <GridItem>
+                    <PersonCard otherUser={otherUser} followed={true} />
+                  </GridItem>
+                );
+              } else {
+                return (
+                  <GridItem>
+                    <PersonCard otherUser={otherUser} followed={false} />
+                  </GridItem>
+                );
+              }
+            })}
+        </Grid>
+      ) : (
+        <Grid templateColumns="repeat(5, 1fr)" ml={3} gap={6}>
+          {copy &&
+            copy.map((otherUser, index) => {
               return (
                 <GridItem>
-                  <PersonCard user={otherUser} followed={true} />
+                  <PersonCard otherUser={otherUser} followed={false} />
                 </GridItem>
               );
-            } else {
-              return (
-                <GridItem>
-                  <PersonCard user={otherUser} followed={false} />
-                </GridItem>
-              );
-            }
-          })}
-      </Grid>
+            })}
+        </Grid>
+      )}
     </PlainLayout>
   );
 }

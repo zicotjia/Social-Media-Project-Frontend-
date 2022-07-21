@@ -3,12 +3,14 @@ import { Box, CloseButton, Flex, Icon, useColorModeValue, Link, Text, BoxProps, 
 import { FiHome } from 'react-icons/fi';
 import { MdAddBox, MdOutlinePeopleAlt, MdPeople, MdPeopleOutline } from 'react-icons/md';
 import { IconType } from 'react-icons';
+import { AiOutlinePlusCircle } from 'react-icons/ai';
 import { CgProfile } from 'react-icons/cg';
-import { RiPagesLine } from 'react-icons/ri';
+import { RiPagesLine, RiLoginCircleLine } from 'react-icons/ri';
 import { ReactText } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
 import { newPage } from '../../hooks/redux/actions/pageActions';
+import { User } from '../../models/User';
 
 interface LinkItemProps {
   name: string;
@@ -26,7 +28,12 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'My Post', url: '/mypage', icon: RiPagesLine },
 ];
 
-const GuestItems: Array<LinkItemProps> = [{ name: 'Home', url: '/', icon: FiHome }];
+const GuestItems: Array<LinkItemProps> = [
+  { name: 'Home', url: '/guest', icon: FiHome },
+  { name: 'All Users', url: '/guest/alluser', icon: MdOutlinePeopleAlt },
+  { name: 'Login', url: '/login', icon: RiLoginCircleLine },
+  { name: 'Register', url: '/register', icon: AiOutlinePlusCircle },
+];
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
@@ -36,6 +43,7 @@ function SidebarContent({ onClose, ...rest }: SidebarProps) {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
+  const { user }: { user: User } = useAppSelector((state) => state.currUserReducer);
   const { page }: { page: string } = useAppSelector((state) => state.pageReducer);
 
   return (
@@ -55,18 +63,31 @@ function SidebarContent({ onClose, ...rest }: SidebarProps) {
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
-      {LinkItems.map((link) => (
-        <NavItem
-          key={link.name}
-          onClick={() => {
-            navigate(link.url);
-            dispatch(newPage(link.name));
-          }}
-          icon={link.icon}
-        >
-          {link.name}
-        </NavItem>
-      ))}
+      {user
+        ? LinkItems.map((link) => (
+            <NavItem
+              key={link.name}
+              onClick={() => {
+                navigate(link.url);
+                dispatch(newPage(link.name));
+              }}
+              icon={link.icon}
+            >
+              {link.name}
+            </NavItem>
+          ))
+        : GuestItems.map((link) => (
+            <NavItem
+              key={link.name}
+              onClick={() => {
+                navigate(link.url);
+                dispatch(newPage(link.name));
+              }}
+              icon={link.icon}
+            >
+              {link.name}
+            </NavItem>
+          ))}
     </Box>
   );
 }

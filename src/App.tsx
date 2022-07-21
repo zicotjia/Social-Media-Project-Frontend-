@@ -7,7 +7,6 @@ import Profile from './pages/Profile';
 import { useAppSelector } from './hooks/redux/hooks';
 import ProtectedRoutes from './wrapper/ProtectedRoutes';
 import Sidebar from './components/Sidebar/Sidebar';
-import People from './pages/AllUsers';
 import AllUsers from './pages/AllUsers';
 import Following from './pages/Following';
 import Follower from './pages/Follower';
@@ -39,7 +38,7 @@ function App() {
               element={
                 <>
                   <AppShell />
-                  <People />
+                  <AllUsers />
                 </>
               }
             />
@@ -49,15 +48,6 @@ function App() {
                 <>
                   <AppShell />
                   <Addpost />
-                </>
-              }
-            />
-            <Route
-              path="/addpost"
-              element={
-                <>
-                  <AppShell />
-                  <AllUsers />
                 </>
               }
             />
@@ -100,7 +90,24 @@ function App() {
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/guest" element={<GuestAppShell />} />
+          <Route
+            path="/guest"
+            element={
+              <>
+                <AppShell />
+                <Home />
+              </>
+            }
+          />
+          <Route
+            path="guest/alluser"
+            element={
+              <>
+                <AppShell />
+                <AllUsers />
+              </>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </div>
@@ -108,11 +115,7 @@ function App() {
 }
 
 function AppShell() {
-  return <Sidebar isGuest={false} />;
-}
-
-function GuestAppShell() {
-  return <Sidebar isGuest={true} />;
+  return <Sidebar />;
 }
 
 export default App;

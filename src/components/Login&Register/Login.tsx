@@ -71,6 +71,9 @@ function Login() {
                   <Link href="/register" color={'blue.500'}>
                     Click here to make an Account
                   </Link>
+                  <Link href="/guest" color={'blue.500'}>
+                    Enter with a Guest Account
+                  </Link>
                 </Stack>
                 <Button colorScheme={'blue'} variant={'solid'} type="submit">
                   Sign in

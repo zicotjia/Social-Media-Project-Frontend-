@@ -77,4 +77,40 @@ function Follow(props: FollowProps) {
   );
 }
 
+export function StaticFollow() {
+  const toast = useToast();
+
+  async function onClickHandler() {
+    toast({
+      title: 'Make an Account to start Following People',
+      status: 'info',
+      duration: 4000,
+      isClosable: true,
+    });
+  }
+
+  return (
+    <HStack>
+      <Button
+        flex={1}
+        fontSize={'sm'}
+        rounded={'full'}
+        bg={'blue.400'}
+        color={'white'}
+        boxShadow={'0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'}
+        _hover={{
+          bg: 'blue.500',
+        }}
+        _focus={{
+          bg: 'blue.500',
+        }}
+        isActive={false}
+        _active={{ bg: 'red.400' }}
+        onClick={() => onClickHandler()}
+      >
+        'Follow'
+      </Button>
+    </HStack>
+  );
+}
 export default Follow;

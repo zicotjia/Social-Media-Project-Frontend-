@@ -15,6 +15,10 @@ interface LikeProps {
   _postid: ObjectId;
 }
 
+interface staticLikeProps {
+  noOfLikes: number;
+}
+
 export interface LikeRequest {
   _userid: ObjectId;
   username: string;
@@ -38,7 +42,6 @@ function Like(props: LikeProps) {
       setnoOfLikes(noOfLikes + 1);
       toast({
         title: 'Post Liked',
-        description: user.username + ' will appreciate this',
         status: 'success',
         duration: 2000,
         isClosable: true,
@@ -65,6 +68,26 @@ function Like(props: LikeProps) {
         _active={{ color: 'red' }}
         isActive={liked}
       />
+      <Text fontWeight="bold"> Likes {noOfLikes}</Text>
+    </HStack>
+  );
+}
+
+export function StaticLike({ noOfLikes }: staticLikeProps) {
+  const toast = useToast();
+
+  function onClickHandler() {
+    toast({
+      title: 'Make an Account to start liking post',
+      status: 'info',
+      duration: 4000,
+      isClosable: true,
+    });
+  }
+
+  return (
+    <HStack>
+      <IconButton aria-label="Like" icon={<TbThumbUp />} onClick={() => onClickHandler()} _active={{ color: 'red' }} />
       <Text fontWeight="bold"> Likes {noOfLikes}</Text>
     </HStack>
   );

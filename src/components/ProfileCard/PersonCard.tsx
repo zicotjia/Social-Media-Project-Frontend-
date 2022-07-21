@@ -1,13 +1,16 @@
 import { Heading, Avatar, Box, Text, useColorModeValue, VStack } from '@chakra-ui/react';
+import { useAppSelector } from '../../hooks/redux/hooks';
 import { User } from '../../models/User';
-import Follow from './Follow';
+import Follow, { StaticFollow } from './Follow';
 
 interface PersonCardProps {
-  user: User;
+  otherUser: User;
   followed: boolean;
 }
 
-function PersonCard({ user, followed }: PersonCardProps) {
+function PersonCard({ otherUser, followed }: PersonCardProps) {
+  const { user }: { user: User } = useAppSelector((state) => state.currUserReducer);
+
   return (
     <Box
       maxW="220px"
@@ -34,18 +37,18 @@ function PersonCard({ user, followed }: PersonCardProps) {
             bottom: 0,
             right: 3,
           }}
-          src={user.profilepicurl}
+          src={otherUser.profilepicurl}
         />
         <Heading fontSize={'2xl'} fontFamily={'body'}>
-          {user.first_name} {user.last_name}
+          {otherUser.first_name} {otherUser.last_name}
         </Heading>
         <Box h="120px" w="full">
-          <Text noOfLines={3}>{user.bio}</Text>
+          <Text noOfLines={3}>{otherUser.bio}</Text>
         </Box>
         <Text fontWeight={600} color={'gray.500'} mb={4}>
-          {user.username}
+          {otherUser.username}
         </Text>
-        <Follow followed={followed} _userid={user._id} />
+        {user ? <Follow followed={followed} _userid={otherUser._id} /> : <StaticFollow />}
       </VStack>
     </Box>
   );

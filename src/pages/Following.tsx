@@ -30,10 +30,10 @@ function Following() {
     <PlainLayout>
       <Grid templateColumns="repeat(5, 1fr)" ml={3} gap={6}>
         {followingUsers &&
-          followingUsers.map((user, index) => {
+          followingUsers.map((otherUser, index) => {
             return (
               <GridItem>
-                <PersonCard user={user} followed={true} />
+                <PersonCard otherUser={otherUser} followed={true} />
               </GridItem>
             );
           })}

@@ -23,9 +23,8 @@ import { userLogout } from '../../hooks/redux/actions/userActions';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
-  isGuest: boolean;
 }
-const MobileNav = ({ onOpen, isGuest, ...rest }: MobileProps) => {
+const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
   const { user }: { user: User } = useAppSelector((state) => state.currUserReducer);
   const navigate = useNavigate();
 
@@ -64,7 +63,7 @@ const MobileNav = ({ onOpen, isGuest, ...rest }: MobileProps) => {
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
-              {isGuest ? (
+              {!user ? (
                 <></>
               ) : (
                 <HStack>

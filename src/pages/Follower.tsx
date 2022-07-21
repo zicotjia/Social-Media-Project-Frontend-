@@ -34,13 +34,13 @@ function Follower() {
             if (user.following.includes(otherUser._id)) {
               return (
                 <GridItem>
-                  <PersonCard user={otherUser} followed={true} />
+                  <PersonCard otherUser={otherUser} followed={true} />
                 </GridItem>
               );
             } else {
               return (
                 <GridItem>
-                  <PersonCard user={otherUser} followed={false} />
+                  <PersonCard otherUser={otherUser} followed={false} />
                 </GridItem>
               );
             }

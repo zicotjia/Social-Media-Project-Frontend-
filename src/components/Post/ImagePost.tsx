@@ -14,7 +14,7 @@ import { Post } from '../../models/Post';
 import { ReactNode } from 'react';
 import { useAppSelector } from '../../hooks/redux/hooks';
 import { User } from '../../models/User';
-import Like from './Like';
+import Like, { StaticLike } from './Like';
 import DeletePostAlert from './DeletePostAlert';
 import EditPostModal from './EditPostModal';
 import React from 'react';
@@ -46,7 +46,7 @@ function ImagePost({ post, edittable }: PostProps) {
   let postTime: string;
   var liked = false;
 
-  if (post.likes) {
+  if (post.likes && user) {
     for (var i = 0; i < post.likes.length; i++) {
       if (post.likes[i].userid === user._id) {
         liked = true;
@@ -85,7 +85,11 @@ function ImagePost({ post, edittable }: PostProps) {
         <Image p={2} height="60vh" width="100vw" objectFit={'cover'} src={post.file} />
       </Box>
       <Stack p={2} align={'left'} bg={useColorModeValue('gray.100', 'gray.700')} roundedBottom="lg">
-        <Like liked={liked} noOfLikes={post.likes ? post.likes.length : 0} _userid={user._id} _postid={post._id} />
+        {user ? (
+          <Like liked={liked} noOfLikes={post.likes ? post.likes.length : 0} _userid={user._id} _postid={post._id} />
+        ) : (
+          <StaticLike noOfLikes={post.likes ? post.likes.length : 0} />
+        )}
         <Text color={'gray.500'} fontSize={'sm'}>
           <Bold>{post.user.username}</Bold> {post.description}
         </Text>
