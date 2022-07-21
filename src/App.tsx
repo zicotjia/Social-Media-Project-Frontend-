@@ -100,7 +100,7 @@ function App() {
           </Route>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route path="/guest/" element={<GuestAppShell />} />
+          <Route path="/guest" element={<GuestAppShell />} />
         </Routes>
       </BrowserRouter>
     </div>

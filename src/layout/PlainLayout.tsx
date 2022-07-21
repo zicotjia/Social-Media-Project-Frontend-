@@ -1,4 +1,4 @@
-import { Box, Flex, Stack, useColorModeValue } from '@chakra-ui/react';
+import { Box, useColorModeValue } from '@chakra-ui/react';
 import React from 'react';
 
 export interface Props {

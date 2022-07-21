@@ -11,7 +11,7 @@ import { PostChangeFormValues } from '../../../components/Post/EditPostModal';
 export function uploadFile(values : AddPostValues) {
  
     return async function(dispatch : Dispatch) {
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
         
         try {
             await axios.post<Post>(url + '/post/addpost', values);
@@ -30,7 +30,7 @@ export function getFile() {
 
     return async function(dispatch : Dispatch) {
         
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
 
         try {
             const response = await axios.get<Post[]>(url + '/post/getpost')
@@ -50,7 +50,7 @@ export function editPost(values : PostChangeFormValues) {
 
     return async function(dispatch : Dispatch) {
 
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
 
         try {
             await axios.patch(url + '/post/edit', values)
@@ -71,7 +71,7 @@ export function likePost(values : LikeRequest) {
 
     return async function(dispatch : Dispatch) {
 
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
         try {
             await axios.patch(url + '/post/like', values)
             dispatch({type: 'LOADING', payload: false})
@@ -90,7 +90,7 @@ export function unLikePost(values : LikeRequest) {
 
     return async function(dispatch : Dispatch) {
 
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
         try {
             await axios.patch(url + '/post/unlike', values)
             dispatch({type: 'LOADING', payload: false})
@@ -109,10 +109,11 @@ export function deletePost(value: ObjectId) {
 
     return async function(dispatch: Dispatch) {
         const params = {postid : value};
-        dispatch({type: "loading", payload : true});
+        dispatch({type: "LOADING", payload : true});
         try {
             await axios.delete(url + '/post/delete', {data: params})
             dispatch({type: 'DELETEPOST', payload: value})
+            dispatch({type: 'LOADING', payload: false})
         } catch (error) {
             dispatch({type:"ERROR", payload: true})
             setTimeout(() => dispatch({type:"ERROR", payload: false}), 1000)

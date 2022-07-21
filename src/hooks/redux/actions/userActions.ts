@@ -58,7 +58,7 @@ export function userLogout() {
 
     return async function(dispatch: Dispatch) {
 
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
         try {
             dispatch({type: 'LOADING', payload: false})
             dispatch({type: 'LOGOUT'})
@@ -77,7 +77,7 @@ export function getUsers() {
 
     return async function(dispatch : Dispatch) {
         
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
 
         try {
             const response = await axios.get<User[]>(url + '/users/getusers')
@@ -97,7 +97,7 @@ export function followUser(values: FollowRequest) {
 
     return async function(dispatch: Dispatch) {
 
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
         try {
             await axios.patch(url + '/users/follow', values)
             dispatch({type: 'LOADING', payload: false})
@@ -117,7 +117,7 @@ export function unFollowUser(values: FollowRequest) {
 
     return async function(dispatch: Dispatch) {
         
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
         try {
             await axios.patch(url + '/users/unfollow', values)
             dispatch({type: 'LOADING', payload: false})
@@ -136,7 +136,7 @@ export function editUserProfile(values: ProfileChangeFormValues) {
 
     return async function(dispatch: Dispatch) {
         
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
         try {
             const updatedUser =  await axios.patch<User>(url + '/users/edit', values)
             dispatch({type: 'LOGIN' , payload: updatedUser.data})
@@ -157,7 +157,7 @@ export function editProfilePicture(values : ProfilePicChangeFormValues) {
 
     return async function(dispatch: Dispatch) {
 
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
         try {
             const updatedUser =  await axios.patch<User>(url + '/users/editpic', values)
             dispatch({type: 'LOGIN' , payload: updatedUser.data})
@@ -178,7 +178,7 @@ export function deleteUser(value: ObjectId) {
 
     return async function(dispatch: Dispatch) {
         const params = {userid : value};
-        dispatch({type: "loading", payload: true});
+        dispatch({type: "LOADING", payload: true});
         try {
             await axios.delete(url + '/users/delete', {data: params})
             dispatch({type: 'LOGOUT'})
