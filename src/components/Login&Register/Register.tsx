@@ -152,7 +152,7 @@ function Register() {
                 <Stack pt={6}>
                   <Text align={'center'}>
                     Already a user?{' '}
-                    <Link href="http://localhost:3000/login" color={'blue.400'}>
+                    <Link href="/login" color={'blue.400'}>
                       Login
                     </Link>
                   </Text>
