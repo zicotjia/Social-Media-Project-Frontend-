@@ -6,7 +6,6 @@ import { useAppDispatch, useAppSelector } from '../hooks/redux/hooks';
 import { useEffect } from 'react';
 import { getUsers } from '../hooks/redux/actions/userActions';
 import { User } from '../models/User';
-import { AlternateEmail } from '@material-ui/icons';
 
 function Following() {
   const dispatch = useAppDispatch();
