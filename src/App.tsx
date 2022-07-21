@@ -4,24 +4,24 @@ import './App.css';
 import Home from './pages/Home';
 import Addpost from './pages/Addpost';
 import Profile from './pages/Profile';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import { Spinner } from '@chakra-ui/react';
 import { useAppSelector } from './hooks/redux/hooks';
 import ProtectedRoutes from './wrapper/ProtectedRoutes';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/Sidebar/Sidebar';
 import People from './pages/AllUsers';
 import AllUsers from './pages/AllUsers';
-import { ProfilePage } from './components/ProfilePage';
 import Following from './pages/Following';
 import Follower from './pages/Follower';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import LoadingSpinner from './components/LoadingSpinner/LoadingSpinner';
+import MyPost from './pages/MyPost';
 
 function App() {
   const { loading } = useAppSelector((state) => state.alertReducer);
 
   return (
     <div className="App">
-      {loading && <Spinner thickness="4px" speed="0.65s" emptyColor="gray.200" color="blue.500" size="xl" />}
+      {loading && <LoadingSpinner />}
       <BrowserRouter>
         <Routes>
           <Route element={<ProtectedRoutes />}>
@@ -66,7 +66,7 @@ function App() {
               element={
                 <>
                   <AppShell />
-                  <ProfilePage />
+                  <Profile />
                 </>
               }
             />
@@ -88,10 +88,19 @@ function App() {
                 </>
               }
             />
+            <Route
+              path="/mypage"
+              element={
+                <>
+                  <AppShell />
+                  <MyPost />
+                </>
+              }
+            />
           </Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/addpost" element={<Addpost />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/guest/" element={<GuestAppShell />} />
         </Routes>
       </BrowserRouter>
     </div>
@@ -99,7 +108,11 @@ function App() {
 }
 
 function AppShell() {
-  return <Sidebar />;
+  return <Sidebar isGuest={false} />;
+}
+
+function GuestAppShell() {
+  return <Sidebar isGuest={true} />;
 }
 
 export default App;

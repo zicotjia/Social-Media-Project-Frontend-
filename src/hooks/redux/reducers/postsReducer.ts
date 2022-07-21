@@ -1,4 +1,4 @@
-import {PayloadAction} from '@reduxjs/toolkit'
+import {AnyAction } from '@reduxjs/toolkit'
 import { Post } from '../../../models/Post';
 
 interface postsState {
@@ -8,7 +8,7 @@ const initialState : postsState = {
     posts : []
 }
 
-export function postsReducer(state = initialState, action : PayloadAction<string>){
+export function postsReducer(state = initialState, action : AnyAction) {
 
     switch(action.type) {
         case 'GET_ALL_POSTS' : {
@@ -18,7 +18,19 @@ export function postsReducer(state = initialState, action : PayloadAction<string
 
             }
         }
-
+        case `DELETEPOST` : {
+            return {
+                ...state,
+                posts : state.posts.filter((post) => post._id !== action.payload)
+            }
+        }case `EDITPOST` : {
+            return {
+                ...state,
+                posts : state.posts.map((post) => post._id === action.id ? {...post, description: action.payload} : post)
+            }
+        }
+    
         default : return state
     }
+
 }

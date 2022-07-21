@@ -1,10 +1,10 @@
-import { Button, HStack } from '@chakra-ui/react';
+import { Button, HStack, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
 import { ObjectId } from 'mongodb';
-import { User } from '../models/User';
-import { followUser, unFollowUser } from '../hooks/redux/actions/userActions';
+import { User } from '../../models/User';
+import { followUser, unFollowUser } from '../../hooks/redux/actions/userActions';
 
 interface FollowProps {
   followed: boolean;
@@ -24,14 +24,25 @@ function Follow(props: FollowProps) {
   const dispatch = useAppDispatch();
   const ids: FollowRequest = { follower: user._id, following: props._userid };
 
+  const toast = useToast();
+
   async function onClickHandler() {
-    alert(ids);
     if (!followed) {
-      alert('Followed');
       dispatch(followUser(ids));
+      toast({
+        title: 'User Followed',
+        status: 'success',
+        duration: 2000,
+        isClosable: true,
+      });
     } else {
-      alert('Unfollowed');
       dispatch(unFollowUser(ids));
+      toast({
+        title: 'User Unfollowed',
+        status: 'warning',
+        duration: 2000,
+        isClosable: true,
+      });
     }
     setFollowed(!followed);
   }

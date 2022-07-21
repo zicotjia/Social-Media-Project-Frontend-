@@ -16,16 +16,25 @@ import {
   MenuList,
 } from '@chakra-ui/react';
 import { FiMenu, FiChevronDown } from 'react-icons/fi';
-import { User } from '../models/User';
-import { useAppSelector } from '../hooks/redux/hooks';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { User } from '../../models/User';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
+import { useNavigate } from 'react-router-dom';
+import { userLogout } from '../../hooks/redux/actions/userActions';
 
 interface MobileProps extends FlexProps {
   onOpen: () => void;
+  isGuest: boolean;
 }
-const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
+const MobileNav = ({ onOpen, isGuest, ...rest }: MobileProps) => {
   const { user }: { user: User } = useAppSelector((state) => state.currUserReducer);
   const navigate = useNavigate();
+
+  const dispatch = useAppDispatch();
+
+  function handleLogout() {
+    dispatch(userLogout());
+    alert('Account logged out');
+  }
 
   return (
     <Flex
@@ -55,15 +64,19 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
         <Flex alignItems={'center'}>
           <Menu>
             <MenuButton py={2} transition="all 0.3s" _focus={{ boxShadow: 'none' }}>
-              <HStack>
-                <Avatar size={'md'} src={user.profilepicurl} />
-                <VStack display={{ base: 'none', md: 'flex' }} alignItems="flex-start" spacing="1px" ml="2">
-                  <Text fontSize="sm">{user.username}</Text>
-                </VStack>
-                <Box display={{ base: 'none', md: 'flex' }}>
-                  <FiChevronDown />
-                </Box>
-              </HStack>
+              {isGuest ? (
+                <></>
+              ) : (
+                <HStack>
+                  <Avatar size={'md'} src={user.profilepicurl} />
+                  <VStack display={{ base: 'none', md: 'flex' }} alignItems="flex-start" spacing="1px" ml="2">
+                    <Text fontSize="sm">{user.username}</Text>
+                  </VStack>
+                  <Box display={{ base: 'none', md: 'flex' }}>
+                    <FiChevronDown />
+                  </Box>
+                </HStack>
+              )}
             </MenuButton>
             <MenuList
               bg={useColorModeValue('white', 'gray.900')}
@@ -71,7 +84,7 @@ const MobileNav = ({ onOpen, ...rest }: MobileProps) => {
             >
               <MenuItem onClick={() => navigate('/profile')}>Profile</MenuItem>
               <MenuDivider />
-              <MenuItem>Sign out</MenuItem>
+              <MenuItem onClick={() => handleLogout()}>Log out</MenuItem>
             </MenuList>
           </Menu>
         </Flex>

@@ -15,38 +15,36 @@ import {
 } from '@chakra-ui/react';
 import { Field, Form, Formik, FormikProps, FormikValues } from 'formik';
 import React from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/redux/hooks';
+import { useAppDispatch } from '../../hooks/redux/hooks';
 import { ObjectId } from 'mongodb';
-import { User } from '../models/User';
-import { editUserProfile } from '../hooks/redux/actions/userActions';
+import { editPost } from '../../hooks/redux/actions/postActions';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   initialRef: React.MutableRefObject<null>;
   finalRef: React.MutableRefObject<null>;
+  postId: ObjectId;
 }
 
-export interface ProfileChangeFormValues {
-  user_id: ObjectId;
-  bio: string | null;
+export interface PostChangeFormValues {
+  postid: ObjectId;
+  description: string | null;
 }
 
-function ProfileModal({ isOpen, onClose, initialRef, finalRef }: ModalProps) {
-  const formRef = React.useRef<FormikProps<ProfileChangeFormValues>>(null);
+function EditPostModal({ isOpen, onClose, initialRef, finalRef, postId }: ModalProps) {
+  const formRef = React.useRef<FormikProps<PostChangeFormValues>>(null);
 
-  const { user }: { user: User } = useAppSelector((state) => state.currUserReducer);
-
-  const initialValues: ProfileChangeFormValues = {
-    user_id: user._id,
-    bio: null,
+  const initialValues: PostChangeFormValues = {
+    postid: postId,
+    description: null,
   };
 
   const dispatch = useAppDispatch();
 
-  function handleSubmit(values: ProfileChangeFormValues) {
-    if (values.bio) {
-      dispatch(editUserProfile(values));
+  function handleSubmit(values: PostChangeFormValues) {
+    if (values.description) {
+      dispatch(editPost(values));
     }
   }
 
@@ -60,12 +58,12 @@ function ProfileModal({ isOpen, onClose, initialRef, finalRef }: ModalProps) {
     >
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Edit Profile</ModalHeader>
+        <ModalHeader>Edit Post Description</ModalHeader>
         <ModalCloseButton />
         <ModalBody pb={6}>
           <Formik
             initialValues={initialValues}
-            onSubmit={(values: ProfileChangeFormValues, action) => {
+            onSubmit={(values: PostChangeFormValues, action) => {
               handleSubmit(values);
               onClose();
             }}
@@ -76,10 +74,10 @@ function ProfileModal({ isOpen, onClose, initialRef, finalRef }: ModalProps) {
               <Box>
                 <Stack spacing={4}>
                   <Box>
-                    <Field name="bio">
-                      {({ field, form }: { field: ProfileChangeFormValues; form: FormikValues }) => (
-                        <FormControl id="bio">
-                          <FormLabel>Bio</FormLabel>
+                    <Field name="description">
+                      {({ field, form }: { field: PostChangeFormValues; form: FormikValues }) => (
+                        <FormControl id="description">
+                          <FormLabel>Description</FormLabel>
                           <Textarea {...field} size="md" />
                         </FormControl>
                       )}
@@ -99,7 +97,7 @@ function ProfileModal({ isOpen, onClose, initialRef, finalRef }: ModalProps) {
             colorScheme="blue"
             mr={3}
           >
-            Edit Profile
+            Edit Post
           </Button>
           <Button onClick={onClose}>Cancel</Button>
         </ModalFooter>
@@ -108,4 +106,4 @@ function ProfileModal({ isOpen, onClose, initialRef, finalRef }: ModalProps) {
   );
 }
 
-export default ProfileModal;
+export default EditPostModal;

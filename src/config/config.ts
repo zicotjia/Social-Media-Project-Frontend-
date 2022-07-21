@@ -1,1 +1,1 @@
-export const url : String = 'http://localhost:8000'
+export const url : String = 'https://quiet-shore-93836.herokuapp.com'

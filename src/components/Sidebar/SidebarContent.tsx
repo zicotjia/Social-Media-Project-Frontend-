@@ -4,8 +4,11 @@ import { FiHome } from 'react-icons/fi';
 import { MdAddBox, MdOutlinePeopleAlt, MdPeople, MdPeopleOutline } from 'react-icons/md';
 import { IconType } from 'react-icons';
 import { CgProfile } from 'react-icons/cg';
+import { RiPagesLine } from 'react-icons/ri';
 import { ReactText } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
+import { newPage } from '../../hooks/redux/actions/pageActions';
 
 interface LinkItemProps {
   name: string;
@@ -20,14 +23,21 @@ const LinkItems: Array<LinkItemProps> = [
   { name: 'All Users', url: '/people', icon: MdOutlinePeopleAlt },
   { name: 'Follower', url: '/follower', icon: MdPeople },
   { name: 'Following', url: '/following', icon: MdPeopleOutline },
+  { name: 'My Post', url: '/mypage', icon: RiPagesLine },
 ];
+
+const GuestItems: Array<LinkItemProps> = [{ name: 'Home', url: '/', icon: FiHome }];
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;
 }
 
-const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+function SidebarContent({ onClose, ...rest }: SidebarProps) {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const { page }: { page: string } = useAppSelector((state) => state.pageReducer);
+
   return (
     <Box
       transition="3s ease"
@@ -41,25 +51,32 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
     >
       <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
         <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
-          Menu
+          {page}
         </Text>
         <CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
       </Flex>
       {LinkItems.map((link) => (
-        <NavItem key={link.name} onClick={() => navigate(link.url)} icon={link.icon}>
+        <NavItem
+          key={link.name}
+          onClick={() => {
+            navigate(link.url);
+            dispatch(newPage(link.name));
+          }}
+          icon={link.icon}
+        >
           {link.name}
         </NavItem>
       ))}
     </Box>
   );
-};
+}
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
   children: ReactText;
 }
 
-const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
+function NavItem({ icon, children, ...rest }: NavItemProps) {
   return (
     <Link style={{ textDecoration: 'none' }} _focus={{ boxShadow: 'none' }}>
       <Flex
@@ -89,6 +106,6 @@ const NavItem = ({ icon, children, ...rest }: NavItemProps) => {
       </Flex>
     </Link>
   );
-};
+}
 
 export default SidebarContent;

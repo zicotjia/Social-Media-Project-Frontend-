@@ -17,10 +17,10 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-import { useAppDispatch } from '../hooks/redux/hooks';
-import { userRegister } from '../hooks/redux/actions/userActions';
 import { Field, Form, Formik, FormikValues } from 'formik';
-import { validateEmail, validateName, validatePassword, validateUsername } from '../validator/validator';
+import { useAppDispatch } from '../../hooks/redux/hooks';
+import { userRegister } from '../../hooks/redux/actions/userActions';
+import { validateEmail, validateName, validatePassword, validateUsername } from '../../validator/validator';
 
 export interface RegisterFormValues {
   first_name: string;

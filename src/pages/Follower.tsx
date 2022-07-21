@@ -1,6 +1,6 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import * as React from 'react';
-import PersonCard from '../components/PersonCard';
+import PersonCard from '../components/ProfileCard/PersonCard';
 import PlainLayout from '../layout/PlainLayout';
 import { useAppDispatch, useAppSelector } from '../hooks/redux/hooks';
 import { useEffect } from 'react';

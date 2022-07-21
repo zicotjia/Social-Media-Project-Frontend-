@@ -1,6 +1,6 @@
 import { Grid, GridItem } from '@chakra-ui/react';
 import * as React from 'react';
-import PersonCard from '../components/PersonCard';
+import PersonCard from '../components/ProfileCard/PersonCard';
 import PlainLayout from '../layout/PlainLayout';
 import { useAppDispatch, useAppSelector } from '../hooks/redux/hooks';
 import { useEffect } from 'react';
@@ -21,16 +21,6 @@ function AllUsers(props: IAppProps) {
 
   var copy = users.slice();
   copy = copy.filter((otherUsers) => otherUsers._id !== user._id);
-
-  var followingUsers: User[] = [];
-  var notFollowingUsers: User[] = [];
-
-  if (user.following) {
-    followingUsers = copy.filter((otherUser) => user.following.includes(otherUser._id));
-    notFollowingUsers = copy.filter((otherUser) => !user.following.includes(otherUser._id));
-  } else {
-    notFollowingUsers = copy;
-  }
 
   return (
     <PlainLayout>

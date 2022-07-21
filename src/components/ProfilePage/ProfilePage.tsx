@@ -8,14 +8,16 @@ import {
   StackDivider,
   Textarea,
   useDisclosure,
+  Flex,
 } from '@chakra-ui/react';
 import React from 'react';
-import { User } from '../models/User';
-import PlainLayout from '../layout/PlainLayout';
+import { User } from '../../models/User';
+import PlainLayout from '../../layout/PlainLayout';
 import { HStack } from '@chakra-ui/react';
 import ProfileModal from './ProfileModal';
-import { useAppSelector } from '../hooks/redux/hooks';
+import { useAppSelector } from '../../hooks/redux/hooks';
 import ProfilePicModal from './ProfilePicModal';
+import DeleteAlert from './DeleteAlert';
 
 export interface AddPostValues {
   description: string;
@@ -23,13 +25,14 @@ export interface AddPostValues {
   user: User;
 }
 
-export function ProfilePage() {
+function ProfilePage() {
   const { isOpen: isOpenProfileModal, onOpen: onOpenProfileModal, onClose: onCloseProfileModal } = useDisclosure();
   const {
     isOpen: isOpenProfilePicModal,
     onOpen: onOpenProfilePicModal,
     onClose: onCloseProfilePicModal,
   } = useDisclosure();
+  const { isOpen: isOpenAlert, onOpen: onOpenAlert, onClose: onCloseAlert } = useDisclosure();
 
   const { user }: { user: User } = useAppSelector((state) => state.currUserReducer);
 
@@ -103,16 +106,26 @@ export function ProfilePage() {
                 <Textarea isDisabled mt={3} size="lg" value={user.bio}></Textarea>
               </Box>
             </VStack>
-            <HStack>
+            <Flex flexDirection="row">
               <Text
-                onClick={onOpenProfileModal}
+                onClick={() => onOpenProfileModal()}
                 color="blue.300"
                 fontWeight="700"
                 _hover={{ textDecoration: 'underline', color: 'blue.500' }}
               >
                 Edit Profile
               </Text>
-            </HStack>
+              <Spacer />
+              <Text
+                onClick={() => onOpenAlert()}
+                color="red.300"
+                fontWeight="700"
+                _hover={{ textDecoration: 'underline', color: 'red' }}
+              >
+                Delete Profile
+              </Text>
+              <DeleteAlert isOpen={isOpenAlert} onClose={onCloseAlert} />
+            </Flex>
           </Box>
         </VStack>
       </PlainLayout>
@@ -127,4 +140,4 @@ export function ProfilePage() {
   );
 }
 
-export {};
+export default ProfilePage;

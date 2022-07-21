@@ -4,14 +4,13 @@ interface errorState {
     error : boolean;
 }
 const initialState : errorState = {
-    error : false,
+    error : false
 }
 
 export function errorReducer(state = initialState, action : PayloadAction<string>) {
 
     switch(action.type) {
-        case 'Error' : return {
-            ...state,
+        case 'ERROR' : return {
             error : action.payload
         }
 

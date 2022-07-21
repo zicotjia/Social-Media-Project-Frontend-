@@ -1,6 +1,5 @@
 import {
   Button,
-  Checkbox,
   Flex,
   FormControl,
   FormLabel,
@@ -13,9 +12,9 @@ import {
 } from '@chakra-ui/react';
 import { Field, Form, Formik, FormikValues } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import { userLogin } from '../hooks/redux/actions/userActions';
-import { useAppDispatch } from '../hooks/redux/hooks';
-import { validateEmail, validatePassword } from '../validator/validator';
+import { userLogin } from '../../hooks/redux/actions/userActions';
+import { useAppDispatch } from '../../hooks/redux/hooks';
+import { validateEmail, validatePassword } from '../../validator/validator';
 
 export interface LoginFormValues {
   email: string;
@@ -69,7 +68,6 @@ function Login() {
               </Field>
               <Stack spacing={7}>
                 <Stack direction={{ base: 'column', sm: 'row' }} align={'start'} justify={'space-between'}>
-                  <Checkbox>Remembr me</Checkbox>
                   <Link href="/register" color={'blue.500'}>
                     Click here to make an Account
                   </Link>

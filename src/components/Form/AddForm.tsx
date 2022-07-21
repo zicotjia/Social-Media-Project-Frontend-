@@ -1,49 +1,48 @@
 import {
-  Avatar,
   Box,
   Button,
-  Center,
   FormControl,
   FormLabel,
   Input,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
+  Image,
   Stack,
   Textarea,
+  useColorModeValue,
+  VStack,
+  Center,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { Field, Form, Formik, FormikProps, FormikValues } from 'formik';
-import { ObjectId } from 'mongodb';
-import React, { useEffect, useState } from 'react';
-import { editUserProfile, editProfilePicture } from '../hooks/redux/actions/userActions';
-import { useAppDispatch, useAppSelector } from '../hooks/redux/hooks';
-import { User } from '../models/User';
+import React from 'react';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux/hooks';
+import { User } from '../../models/User';
+import { uploadFile } from '../../hooks/redux/actions/postActions';
+import PlainLayout from '../../layout/PlainLayout';
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@chakra-ui/react';
 
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+export interface AddPostValues {
+  description: string | null;
+  file: string;
+  user: User;
 }
 
-export interface ProfilePicChangeFormValues {
-  user_id: ObjectId;
-  url: string;
-}
-
-function ProfilePicModal({ isOpen, onClose }: ModalProps) {
+export function AddForm() {
   const [imageFile, setImageFile] = useState<File>();
   const [previewUrl, setPreviewUrl] = useState<string>();
+  const [error, setError] = useState<boolean>(false);
 
   const { user }: { user: User } = useAppSelector((state) => state.currUserReducer);
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const initialValues: ProfilePicChangeFormValues = { user_id: user._id, url: '' };
+  const toast = useToast();
+
+  const initialValues: AddPostValues = { description: '', file: '', user: user };
   const filePicker = React.useRef<HTMLInputElement>(null);
-  const formikRef = React.useRef<FormikProps<ProfilePicChangeFormValues>>(null);
+  const formikRef = React.useRef<FormikProps<AddPostValues>>(null);
 
   function refClick() {
     if (filePicker.current) {
@@ -52,85 +51,84 @@ function ProfilePicModal({ isOpen, onClose }: ModalProps) {
   }
 
   useEffect(() => {
+    setError(false);
     if (!imageFile) {
       return;
     }
     const fileReader = new FileReader();
     fileReader.onload = () => {
       setPreviewUrl(fileReader.result as string);
-      formikRef.current?.setFieldValue('profilepicurl', fileReader.result);
+      formikRef.current?.setFieldValue('file', fileReader.result);
     };
     fileReader.readAsDataURL(imageFile);
   }, [imageFile]);
 
   function handleFileInput(event: React.FormEvent<HTMLInputElement>) {
     const target = event.target as HTMLInputElement;
-    if (!target.files) return;
+    if (!target.files) {
+      return;
+    }
     const file: File = target.files[0];
     setImageFile(file);
   }
 
-  async function handleSubmit(values: ProfilePicChangeFormValues) {
-    dispatch(editProfilePicture(values));
+  async function handleSubmit(values: AddPostValues) {
+    if (values.file === '') {
+      setError(true);
+      return;
+    }
     console.log(values);
+    await dispatch(uploadFile(values));
+
+    toast({
+      title: 'Post has been added',
+      status: 'success',
+      duration: 2000,
+      isClosable: true,
+    });
+    navigate('/');
   }
 
   return (
-    <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalHeader>Edit Profile Pic</ModalHeader>
-        <ModalCloseButton />
-        <ModalBody pb={6}>
+    <PlainLayout>
+      <VStack>
+        <Box rounded={'lg'} minW="35vw" bg={useColorModeValue('white', 'gray.700')} boxShadow="lg" p={8}>
           <Formik
             innerRef={formikRef}
             initialValues={initialValues}
-            onSubmit={(values: ProfilePicChangeFormValues, action) => {
+            onSubmit={(values: AddPostValues, action) => {
               handleSubmit(values);
-              onClose();
             }}
-            validateOnChange={true}
-            validateOnBlur={true}
           >
             <Form>
               <Stack>
-                <Field name="profilepicurl">
+                <Field name="description">
+                  {({ field, form }: { field: AddPostValues; form: FormikValues }) => (
+                    <FormControl id="description">
+                      <FormLabel>Description</FormLabel>
+                      <Textarea {...field} size="lg" />
+                    </FormControl>
+                  )}
+                </Field>
+                <Field name="file">
                   {({
                     field,
                     form,
                     setFieldValue,
                   }: {
-                    field: ProfilePicChangeFormValues;
+                    field: AddPostValues;
                     form: FormikValues;
                     setFieldValue: any;
                   }) => (
-                    <FormControl id="profilepicurl" isRequired>
+                    <FormControl id="file" isInvalid={error}>
                       <Stack spacing="3">
                         <FormLabel>Upload image</FormLabel>
-                        {previewUrl && (
-                          <Avatar
-                            size={'xl'}
-                            src={previewUrl}
-                            mb={4}
-                            pos={'relative'}
-                            _after={{
-                              content: '""',
-                              w: 4,
-                              h: 4,
-                              bg: 'green.300',
-                              border: '2px solid white',
-                              rounded: 'full',
-                              pos: 'absolute',
-                              bottom: 0,
-                              right: 3,
-                            }}
-                          />
-                        )}
-
+                        <FormErrorMessage> Image is Required </FormErrorMessage>
+                        {previewUrl && <Image p={2} height="40vh" width="30vw" objectFit={'cover'} src={previewUrl} />}
                         {!previewUrl && <p>Image will be previewed here</p>}
                         <Button
                           flex={1}
-                          fontSize={'md'}
+                          fontSize={'xl'}
                           width="30%"
                           bg={'gray.400'}
                           color={'white'}
@@ -159,26 +157,29 @@ function ProfilePicModal({ isOpen, onClose }: ModalProps) {
                     </FormControl>
                   )}
                 </Field>
+                <Center>
+                  <Button
+                    flex={1}
+                    fontSize={'xl'}
+                    bg={'blue.400'}
+                    color={'white'}
+                    boxShadow={'0px 1px 25px -5px rgb(66 153 225 / 48%), 0 10px 10px -5px rgb(66 153 225 / 43%)'}
+                    _hover={{
+                      bg: 'blue.500',
+                    }}
+                    _focus={{
+                      bg: 'blue.500',
+                    }}
+                    type="submit"
+                  >
+                    Add Post
+                  </Button>
+                </Center>
               </Stack>
             </Form>
           </Formik>
-        </ModalBody>
-
-        <ModalFooter>
-          <Button
-            onClick={() => {
-              if (formikRef.current) formikRef.current.handleSubmit();
-            }}
-            colorScheme="blue"
-            mr={3}
-          >
-            Edit Profile
-          </Button>
-          <Button onClick={onClose}>Cancel</Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </Box>
+      </VStack>
+    </PlainLayout>
   );
 }
-
-export default ProfilePicModal;

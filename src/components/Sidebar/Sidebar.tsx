@@ -4,7 +4,11 @@ import { Drawer, DrawerContent, useDisclosure } from '@chakra-ui/react';
 import SidebarContent from './SidebarContent';
 import MobileNav from './MobileNav';
 
-export default function SidebarWithHeader() {
+interface sidebarProps {
+  isGuest: boolean;
+}
+
+export default function SidebarWithHeader({ isGuest }: sidebarProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <>
@@ -22,7 +26,7 @@ export default function SidebarWithHeader() {
           <SidebarContent onClose={onClose} />
         </DrawerContent>
       </Drawer>
-      <MobileNav onOpen={onOpen} />
+      <MobileNav onOpen={onOpen} isGuest={isGuest} />
     </>
   );
 }

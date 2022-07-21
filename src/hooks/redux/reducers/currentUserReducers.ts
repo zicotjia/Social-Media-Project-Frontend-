@@ -22,12 +22,16 @@ export function currUserReducer(state = initialState, action : PayloadAction<str
 
     switch(action.type) {
         case 'LOGIN' : {
-            console.log(action.payload)
             return {
                 user : action.payload
             }
         }
-        case "FOLLOW" : {
+        case 'LOGOUT' : {
+            return {
+                user : null
+            }
+        }
+        case 'FOLLOW' : {
             if (state.user) {
                 return {
                     ...state,
@@ -39,7 +43,7 @@ export function currUserReducer(state = initialState, action : PayloadAction<str
             }
             break
         }
-        case "UNFOLLOW" : {
+        case 'UNFOLLOW' : {
             if (state.user) {
                 return {
                     ...state,
@@ -51,8 +55,6 @@ export function currUserReducer(state = initialState, action : PayloadAction<str
             }
             break
         }
-
-
         default : return state
     }
 }
