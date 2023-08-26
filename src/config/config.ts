@@ -1,1 +1,1 @@
-export const url : String = 'https://quiet-shore-93836.herokuapp.com'
+export const url : String = 'https://socmed.onrender.com'
